@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TryHackMe Walkthroughs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .post-preview {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .post-thumbnail {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .post-content {
+            max-width: 600px;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: blue;
+        }
+        .pagination a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>TryHackMe Walkthroughs</h1>
+    <div id="posts-container"></div>
+    <div class="pagination" id="pagination"></div>
+
+    <script>
+        // Configuration
+        const postsPerPage = 5;
+        const postsContainer = document.getElementById("posts-container");
+        const paginationContainer = document.getElementById("pagination");
+
+        // Fetch JSON data
+        fetch('walkthroughs.json') // Replace 'walkthroughs.json' with the URL or file path to your JSON
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(posts => {
+                renderPosts(posts, 1); // Render the first page
+                setupPagination(posts); // Setup pagination
+            })
+            .catch(error => {
+                console.error('Error fetching JSON data:', error);
+                postsContainer.innerHTML = '<p>Failed to load walkthroughs. Please try again later.</p>';
+            });
+
+        // Render posts for a specific page
+        function renderPosts(posts, page) {
+            const start = (page - 1) * postsPerPage;
+            const end = start + postsPerPage;
+            const paginatedPosts = posts.slice(start, end);
+
+            postsContainer.innerHTML = ""; // Clear current posts
+            paginatedPosts.forEach(post => {
+                const postHTML = `
+                    <div class="post-preview">
+                        <img src="${post.thumbnail}" alt="${post.title}" class="post-thumbnail">
+                        <div class="post-content">
+                            <a href="${post.link}"><h2>${post.title}</h2></a>
+                            <p>${post.excerpt}</p>
+                        </div>
+                    </div>
+                `;
+                postsContainer.innerHTML += postHTML;
+            });
+
+            if (paginatedPosts.length === 0) {
+                postsContainer.innerHTML = "<p>No walkthroughs available.</p>";
+            }
+        }
+
+        // Setup pagination controls
+        function setupPagination(posts) {
+            const totalPages = Math.ceil(posts.length / postsPerPage);
+            paginationContainer.innerHTML = ""; // Clear current pagination
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement("a");
+                pageLink.href = "#";
+                pageLink.textContent = i;
+                pageLink.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    renderPosts(posts, i);
+                });
+                paginationContainer.appendChild(pageLink);
+            }
+        }
+    </script>
+</body>
+</html>

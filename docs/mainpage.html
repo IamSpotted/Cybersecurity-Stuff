@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome to My Cybersecurity Repository</title>
+
+    <!-- Embedded CSS -->
+    <style>
+        /* Base styles for both themes */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Light theme (default) */
+        body.light-theme {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header.light-theme {
+            background-color: #fff;
+            color: #333;
+        }
+
+        footer.light-theme {
+            background-color: #fff;
+            color: #333;
+        }
+
+        /* Dark theme */
+        body.dark-theme {
+            background-color: #121212;
+            color: #fff;
+        }
+
+        header.dark-theme {
+            background-color: #333;
+            color: #fff;
+        }
+
+        footer.dark-theme {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Hover effect for links */
+        a:hover {
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Cybersecurity Hub</h1>
+        <nav>
+            <ul>
+                <li><a href="#thm-walkthroughs">TryHackMe Walkthroughs</a></li>
+                <li><a href="#cybersecurity-news">Cybersecurity News</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="main-page">
+        <h2>Main Page</h2>
+        <p>Welcome to my personal cybersecurity repository. This site contains my TryHackMe walkthroughs, cybersecurity news, and other related resources.</p>
+    </section>
+
+    <section id="thm-walkthroughs">
+        <h2>TryHackMe Walkthroughs</h2>
+        <p>Explore my TryHackMe walkthroughs by visiting the link below:</p>
+        <a href="repo/THMwalkthrough/" target="_blank">TryHackMe Walkthroughs</a>
+    </section>
+
+    <section id="cybersecurity-news">
+        <h2>Cybersecurity News</h2>
+        <p>Stay up-to-date with the latest cybersecurity news by visiting the link below:</p>
+        <a href="repo/news/" target="_blank">Cybersecurity News</a>
+    </section>
+
+    <footer>
+        <p>Created by [Your Name].</p>
+    </footer>
+
+    <!-- Embedded JavaScript -->
+    <script>
+        // Check for user's color scheme preference and apply appropriate theme
+        document.addEventListener('DOMContentLoaded', function () {
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+            // Apply the theme based on user preference
+            if (prefersDarkScheme) {
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+                document.querySelector('header').classList.add('dark-theme');
+                document.querySelector('header').classList.remove('light-theme');
+                document.querySelector('footer').classList.add('dark-theme');
+                document.querySelector('footer').classList.remove('light-theme');
+            } else {
+                document.body.classList.add('light-theme');
+                document.body.classList.remove('dark-theme');
+                document.querySelector('header').classList.add('light-theme');
+                document.querySelector('header').classList.remove('dark-theme');
+                document.querySelector('footer').classList.add('light-theme');
+                document.querySelector('footer').classList.remove('dark-theme');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -55,7 +55,7 @@
         const paginationContainer = document.getElementById("pagination");
 
         // Fetch JSON data
-        fetch('walkthroughs.json') // Replace 'walkthroughs.json' with the URL or file path to your JSON
+        fetch('/docs/walkthrough/walkthroughs.json') // Replace 'walkthroughs.json' with the URL or file path to your JSON
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

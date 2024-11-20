@@ -1,1 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TryHackMe Walkthrough</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>TryHackMe Walkthrough</h1>
+    <p>Click on a task to view details.</p>
+  </header>
+
+  <!-- Inline CSS for Styling -->
+  <style>
+    /* Base styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    #tasks-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .task {
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .task-title {
+      display: block;
+      width: 100%;
+      background-color: #4a90e2;
+      color: white;
+      padding: 15px;
+      font-size: 1.1em;
+      cursor: pointer;
+      text-align: left;
+      border: none;
+      outline: none;
+    }
+
+    /* Task Content Animation */
+    .task-content {
+      padding: 0 15px; /* Set padding to 0 for collapse */
+      background-color: white;
+      display: block;
+      max-height: 0; /* Initially collapsed */
+      overflow: hidden; /* Hide content when collapsed */
+      transition: max-height 0.5s ease-in-out, padding 0.3s ease, overflow 0.3s ease;
+    }
+
+    /* Expand task content when it is active */
+    .task-content.expanded {
+      max-height: 1000px; /* A large enough value to fit your content */
+      padding: 15px; /* Restore padding when expanded */
+      overflow: auto; /* Allow scrolling once expanded */
+    }
+
+    .task-image {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+    }
+	
+	figure {
+		font-size: 0.9em;
+		color: #555;
+		margin-top: 5px;
+	}
+	
+	figcaption {
+      font-size: 0.9em;
+      color: #555;
+      margin-top: 5px;
+    }
+	
+    /* Responsive Styles */
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+      }
+
+      h1 {
+        font-size: 1.5em;
+      }
+
+      .task-title {
+        font-size: 1em;
+        padding: 12px;
+      }
+
+      .task-content {
+        padding: 12px;
+      }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+      }
+
+      header {
+        background-color: #333;
+        color: #e0e0e0;
+      }
+
+      .task {
+        border-color: #444;
+      }
+
+      .task-title {
+        background-color: #333;
+        color: #e0e0e0;
+      }
+
+      .task-content {
+        background-color: #2a2a2a;
+      }
+
+      .task-content.expanded {
+        background-color: #333;
+      }
+    }
+  </style>
+
+  <!-- Main Content -->
+  <main id="tasks-container">
+    <!-- Task 1 -->
+    <section class="task">
+      <button class="task-title">Task 1: Initial Setup</button>
+      <div class="task-content">
+        <p>Details for Task 1. Explain the initial setup here...</p>
+      </div>
+    </section>
+
+    <!-- Task 2 -->
+    <section class="task">
+      <button class="task-title">Task 2: Enumerating Samba For Shares</button>
+      <div class="task-content">
+        <p>For our first task (technically second task, but the first task was spawning the target machine), we will be using Nmap to scan our target. While it wasn’t necessary for this room, I did a port scan with the -sV option so that I could see what ports were exposed and the services Nmap thinks is running on those ports.</p>
+		
+		<figure>
+			<img src="images/image-97.jpg" alt="Nmap scan result showing exposed ports" class="task-image">
+			<figcaption>Nmap scan result showing exposed ports.
+		</figcaption>
+
+        <p>As you can see from my screenshot, this scan already has two services that seem to correspond to the theme of this room. We also see that FTP and SSH are running. Lets do a different scan using the NSE to find all SMB shares.</p>
+
+        <img src="images/image-98.jpg" alt="NSE scan for SMB shares" class="task-image">
+
+        <p>Again, we see those same two ports come up. With this information, we try to connect to the anonymous share using smbclient. You will find that most Linux Distros already include smbclient.</p>
+
+        <img src="images/image-99.jpg" alt="smbclient successful connection to anonymous share" class="task-image">
+
+        <p>As you can see in the screenshot above, we were able to successfully connect to the anonymous share. When we list the files in the directory, there is only one file called “log.txt”. Let’s grab that file!</p>
+
+        <img src="images/image-100.jpg" alt="Directory listing showing log.txt file" class="task-image">
+
+        <p>In the screenshot above, you can see that I used smbget to recursively download the anonymous directory. Now that we have the log.txt file on our computer, lets see what’s inside.</p>
+
+        <img src="images/image-101.jpg" alt="Contents of log.txt" class="task-image">
+
+        <p>Very interesting find indeed! This log file contains some very important information for us. First, it contains information for Kenobi when generating an SSH key for the user. Secondly, it contains information about the ProFTPd server.</p>
+
+        <p>In our initial Nmap scan, you may have noticed the RPCbind server running on port 111. The RPCbind server converts an RPC program number into a universal address. When an RPC service gets started, it (server) tells rpcbind the address at which it is listening and the RPC program number it’s prepared to serve.</p>
+
+        <p>We can use the NSE to enumerate this, so let’s run a script against port 111.</p>
+
+        <img src="images/image-102.jpg" alt="RPCbind enumeration showing /var mount" class="task-image">
+
+        <p>As you can see, we have found the mount /var.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- JavaScript for Interactive Task Expansion -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".task-title").forEach((title) => {
+      title.addEventListener("click", () => {
+        const content = title.nextElementSibling;
+
+        // Collapse previously expanded task
+        document.querySelectorAll(".task-content.expanded").forEach((expandedContent) => {
+          if (expandedContent !== content) {
+            expandedContent.classList.remove("expanded");
+            expandedContent.style.overflow = 'hidden'; // Hide content when collapsed
+          }
+        });
+
+        // Toggle the expanded class for the current task
+        content.classList.toggle("expanded");
+
+        // Once the transition ends, change the overflow property
+        content.addEventListener('transitionend', () => {
+          if (content.classList.contains('expanded')) {
+            content.style.overflow = 'auto'; // Enable scrolling once expanded
+          } else {
+            content.style.overflow = 'hidden'; // Hide content when collapsed
+          }
+        });
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>
 

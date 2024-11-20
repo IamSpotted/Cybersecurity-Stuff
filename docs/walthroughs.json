@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Room 1 Walkthrough",
+    "thumbnail": "/images/room1.jpg",
+    "excerpt": "Explore Room 1 in this detailed walkthrough.",
+    "link": "/docs/walkthrough/room1"
+  },
+  {
+    "title": "Room 2 Walkthrough",
+    "thumbnail": "/images/room2.jpg",
+    "excerpt": "Discover how to solve Room 2 step by step.",
+    "link": "/docs/walkthrough/room2"
+  }
+]

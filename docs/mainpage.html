@@ -11,7 +11,7 @@
         /* Base styles for both themes */
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
+            line-height: 1.5;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -46,6 +46,18 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+		
+		/*Style for the first letter of the paragraph */
+		.intro-text::first-letter {
+			font-size: calc(3.0	* 1em);
+			font-weight: bold;
+			color: #333;
+			float: left;
+			margin-right: 5px;
+			line-height: 1;
+		}
+		
+		
 
         footer {
             text-align: center;
@@ -60,6 +72,10 @@
             background-color: #f4f4f4;
             color: #333;
         }
+		
+		body.light-theme .intro-text::first-letter {
+			color: #333;
+		}
 
         header.light-theme {
             background-color: #fff;
@@ -84,6 +100,10 @@
 		
 		body.dark-theme section {
 			background-color: #333;
+		}
+		
+		body.dark-theme .intro-text::first-letter {
+			color: #fff;
 		}
 
         header.dark-theme {
@@ -115,7 +135,7 @@
 
     <section id="main-page">
         <h2>Main Page</h2>
-        <p>Welcome to my personal cybersecurity repository. This site contains my TryHackMe walkthroughs, cybersecurity news, and other related resources.</p>
+        <p class="intro-text">Welcome to my personal cybersecurity repository. This site serves as a comprehensive collection of resources designed to help individuals and professionals alike deepen their knowledge in the field of cybersecurity. It includes detailed TryHackMe walkthroughs that break down practical challenges and exercises I've worked through, providing insights into real-world penetration testing, network security, and ethical hacking. Additionally, you’ll find up-to-date cybersecurity news, which highlights the latest developments in the industry, including new vulnerabilities, emerging threats, and groundbreaking research. Beyond that, I also share guides, tools, and thought-provoking articles on various aspects of cybersecurity, from network defense to incident response. Whether you're just starting out or you're an experienced professional looking to stay informed, this repository aims to be a valuable resource for all your cybersecurity needs.</p>
     </section>
 
     <section id="thm-walkthroughs">
